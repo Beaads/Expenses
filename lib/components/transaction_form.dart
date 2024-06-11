@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TransactionForm extends StatelessWidget {
-  const TransactionForm({super.key});
+  TransactionForm({super.key});
 
   final titleController = TextEditingController();
   final valueController = TextEditingController();
@@ -16,11 +16,11 @@ class TransactionForm extends StatelessWidget {
           children: [
             TextField(
               controller: titleController,
-              decoration: InputDecoration(labelText: 'Titulo'),
+              decoration: const InputDecoration(labelText: 'Titulo'),
             ),
             TextField(
               controller: valueController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Valor (R\$)',
               ),
             ),
