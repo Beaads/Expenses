@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 
 class TransactionForm extends StatelessWidget {
-  TransactionForm({super.key});
+  TransactionForm(this.onSubmit, {super.key});
+  final void Function(String, double) onSubmit;
 
   final titleController = TextEditingController();
   final valueController = TextEditingController();
+
+  _submitForm() {
+      final title = titleController.text;
+      final value = double.tryParse(valueController.text) ?? 0.0;
+      if(title.isEmpty || value <= 0) {
+        return;
+      }
+      onSubmit(title, value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +26,13 @@ class TransactionForm extends StatelessWidget {
           children: [
             TextField(
               controller: titleController,
+              onSubmitted: (_) => _submitForm(),
               decoration: const InputDecoration(labelText: 'Titulo'),
             ),
             TextField(
               controller: valueController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              onSubmitted: (_) => _submitForm(),
               decoration: const InputDecoration(
                 labelText: 'Valor (R\$)',
               ),
@@ -28,7 +41,7 @@ class TransactionForm extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FilledButton(
-                  onPressed: () {},
+                  onPressed: _submitForm,
                   style: ButtonStyle(
                     backgroundColor:
                     WidgetStateProperty.all<Color>(Colors.white10),

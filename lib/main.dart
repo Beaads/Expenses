@@ -22,20 +22,32 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Despesas Pessoais'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            child: const Card(
-              color: Colors.blue,
-              elevation: 5,
-              child: Text('Grafico'),
-            ),
-          ),
-          const TransactionUser(),
+        actions: [
+          IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.add))
         ],
       ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              child: const Card(
+                color: Colors.blue,
+                elevation: 5,
+                child: Text('Grafico'),
+              ),
+            ),
+            const TransactionUser(),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
