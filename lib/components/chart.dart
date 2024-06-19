@@ -1,6 +1,5 @@
 import 'package:expenses/components/chart_bar.dart';
 import 'package:expenses/models/transaction.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -33,7 +32,7 @@ class Chart extends StatelessWidget {
        'day': DateFormat.E().format(weekDay)[0],
       'value': totalSum,
      };
-    });
+    }).reversed.toList();
   }
 
   double get _weekTotalValue {
@@ -58,7 +57,7 @@ class Chart extends StatelessWidget {
             child: ChartBar(
                 label: tr['day'].toString(),
                 value: tr['value'] as double,
-                percentage: (tr['value'] as double) / _weekTotalValue),
+                percentage: _weekTotalValue == 0 ? 0 : (tr['value'] as double) / _weekTotalValue),
           );
       }).toList(),
       ),
