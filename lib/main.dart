@@ -113,32 +113,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: appBar,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // if (isLandscape)
-            //   Row(
-            //     children: [
-            //       const Text('Exibir Grafico'),
-            //       Switch(
-            //           value: true,
-            //           onChanged: (value) {
-            //             setState(() {
-            //               _showChart = value;
-            //             });
-            //           })
-            //     ],
-            //   ),
-            if (_showChart || !isLandscape)
-              SizedBox(
-                  height: availableHeight * (isLandscape ? 0.8 : 0.30),
-                  child: Chart(recentTransaction: _recentTransaction)),
-            if (!_showChart || !isLandscape)
-              SizedBox(
-                  height: availableHeight * (isLandscape ? 1 : 0.70),
-                  child: TransactionList(_transaction, _removeTransaction)),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // if (isLandscape)
+              //   Row(
+              //     children: [
+              //       const Text('Exibir Grafico'),
+              //       Switch.adaptive(
+              //           value: true,
+              //           onChanged: (value) {
+              //             setState(() {
+              //               _showChart = value;
+              //             });
+              //           })
+              //     ],
+              //   ),
+              if (_showChart || !isLandscape)
+                SizedBox(
+                    height: availableHeight * (isLandscape ? 0.8 : 0.30),
+                    child: Chart(recentTransaction: _recentTransaction)),
+              if (!_showChart || !isLandscape)
+                SizedBox(
+                    height: availableHeight * (isLandscape ? 1 : 0.70),
+                    child: TransactionList(_transaction, _removeTransaction)),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
