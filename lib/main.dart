@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'components/transaction_list.dart';
 import 'models/transaction.dart';
 
-
 main() => runApp(const ExpensesApp());
 
 class ExpensesApp extends StatelessWidget {
@@ -34,16 +33,22 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _transaction = [
     Transaction(
-        id: 't1', title: 'Nova bolsa', value: 200.00, date: DateTime.now().subtract(const Duration(days: 3))),
+        id: 't1',
+        title: 'Nova bolsa',
+        value: 200.00,
+        date: DateTime.now().subtract(const Duration(days: 3))),
     Transaction(
-        id: 't2', title: 'Nova sandalia', value: 100.00, date: DateTime.now().subtract(const Duration(days: 4))),
+        id: 't2',
+        title: 'Nova sandalia',
+        value: 100.00,
+        date: DateTime.now().subtract(const Duration(days: 4))),
   ];
+
+  bool _showChart = false;
 
   List<Transaction> get _recentTransaction {
     return _transaction.where((tr) {
-      return tr.date.isAfter(DateTime.now().subtract(
-        const Duration(days: 7)
-      ));
+      return tr.date.isAfter(DateTime.now().subtract(const Duration(days: 7)));
     }).toList();
   }
 
@@ -71,30 +76,68 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _openTransactionFormModal(BuildContext context) {
     showModalBottomSheet(
-        context: context,
-        builder: (_) {
-          return TransactionForm(_addTransaction);
-        },
+      context: context,
+      builder: (_) {
+        return TransactionForm(_addTransaction);
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    bool isLandscape =
+        mediaQuery.orientation == Orientation.landscape;
+
+    final appBar = AppBar(
+      title: const Text('Despesas Pessoais'),
+      actions: [
+        if(isLandscape)
+        IconButton(
+            onPressed: () {
+              setState(() {
+                _showChart = !_showChart;
+              });
+            },
+            icon: Icon(_showChart ? Icons.list : Icons.show_chart)
+        ),
+        IconButton(
+            onPressed: () => _openTransactionFormModal(context),
+            icon: const Icon(Icons.add)),
+      ],
+    );
+
+    final availableHeight = mediaQuery.size.height -
+        appBar.preferredSize.height -
+        mediaQuery.padding.top;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Despesas Pessoais'),
-        actions: [
-          IconButton(
-              onPressed: () => _openTransactionFormModal(context),
-              icon: const Icon(Icons.add))
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(recentTransaction: _recentTransaction),
-            TransactionList(_transaction, _removeTransaction),
+            // if (isLandscape)
+            //   Row(
+            //     children: [
+            //       const Text('Exibir Grafico'),
+            //       Switch(
+            //           value: true,
+            //           onChanged: (value) {
+            //             setState(() {
+            //               _showChart = value;
+            //             });
+            //           })
+            //     ],
+            //   ),
+            if (_showChart || !isLandscape)
+              SizedBox(
+                  height: availableHeight * (isLandscape ? 0.8 : 0.30),
+                  child: Chart(recentTransaction: _recentTransaction)),
+            if (!_showChart || !isLandscape)
+              SizedBox(
+                  height: availableHeight * (isLandscape ? 1 : 0.70),
+                  child: TransactionList(_transaction, _removeTransaction)),
           ],
         ),
       ),
