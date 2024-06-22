@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:expenses/components/chart.dart';
@@ -103,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         IconButton(
             onPressed: () => _openTransactionFormModal(context),
-            icon: const Icon(Icons.add)),
+            icon: isLandscape ? const Icon(Icons.add) : Container()),
       ],
     );
 
